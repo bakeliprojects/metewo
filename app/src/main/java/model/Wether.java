@@ -1,80 +1,49 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Lamine Dieng on 17/06/2017.
  */
-
 public class Wether {
-    private String locationRegion;
-    private String currentTempC;
-    private String conditionIcon;
-    private String conditionText;
-    private String windMph;
-    private String minTemp;
-    private String maxTemp;
-    private String currentLastUpdated;
+    @SerializedName("location")
+    @Expose
+    private Location location;
 
-    public String getLocationRegion() {
-        return locationRegion;
+    @SerializedName("current")
+    @Expose
+    private Current current;
+
+    @SerializedName("forecast")
+    @Expose
+    private Forecast forecast;
+
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocationRegion(String locationRegion) {
-        this.locationRegion = locationRegion;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public String getCurrentTempC() {
-        return currentTempC;
+    public Current getCurrent() {
+        return current;
     }
 
-    public void setCurrentTempC(String currentTempC) {
-        this.currentTempC = currentTempC;
+    public void setCurrent(Current current) {
+        this.current = current;
     }
 
-    public String getConditionIcon() {
-        return conditionIcon;
+    public Forecast getForecast() {
+        return forecast;
     }
 
-    public void setConditionIcon(String conditionIcon) {
-        this.conditionIcon = conditionIcon;
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
     }
 
-    public String getConditionText() {
-        return conditionText;
-    }
 
-    public void setConditionText(String conditionText) {
-        this.conditionText = conditionText;
-    }
 
-    public String getWindMph() {
-        return windMph;
-    }
 
-    public void setWindMph(String windMph) {
-        this.windMph = windMph;
-    }
-
-    public String getMinTemp() {
-        return minTemp;
-    }
-
-    public void setMinTemp(String minTemp) {
-        this.minTemp = minTemp;
-    }
-
-    public String getMaxTemp() {
-        return maxTemp;
-    }
-
-    public void setMaxTemp(String maxTemp) {
-        this.maxTemp = maxTemp;
-    }
-
-    public String getCurrentLastUpdated() {
-        return currentLastUpdated;
-    }
-
-    public void setCurrentLastUpdated(String currentLastUpdated) {
-        this.currentLastUpdated = currentLastUpdated;
-    }
 }

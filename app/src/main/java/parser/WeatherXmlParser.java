@@ -7,15 +7,13 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Wether;
-
 /**
  * Created by Lamine Dieng on 17/06/2017.
  */
 
 public class WeatherXmlParser {
 
-    public static List<Wether> parseFeed(String content)
+   /* public static List<Wether> parseFeed(String content)
     {
         try {
 
@@ -78,6 +76,9 @@ public class WeatherXmlParser {
                                 case "mintemp_c":
                                     wether.setMinTemp(parser.getText());
                                     break;
+                                case "date":
+                                    wether.setDate(parser.getText());
+                                    break;
                                 default:
                                     break;
                             }
@@ -98,5 +99,5 @@ public class WeatherXmlParser {
         }
 
 
-    }
+    }*/
 }

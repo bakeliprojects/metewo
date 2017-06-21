@@ -1,23 +1,28 @@
 package metewo.android.bakeli.volkeno.com.metewo;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Application;
+import android.app.ListActivity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.text.Layout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,28 +30,39 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Current;
+import model.Forecast;
+import model.ForecastDay;
+import model.Location;
 import model.Wether;
+import parser.RetrofitInterface;
 import parser.WeatherXmlParser;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+implements NavigationView.OnNavigationItemSelectedListener {
+   //private String url = "http://api.apixu.com/v1/forecast.json?key=e10f2a2773ae47d4ac1131057171606&q=Dakar&days=7&lang=fr";
+    private static final String BASE_URL = "http://api.apixu.com/";
+    private String place = "Dakar";
 
+    private String TAG = "Retrofit";
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
     ProgressBar pbar;
-    List<MyTask> tasks;
-    List<Wether> wetherList;
-    TextView location;
-    TextView lastUpdated;
-    TextView tempC;
-    TextView icon;
-    TextView conditionText;
-    TextView wind;
-    TextView mintemp;
-    TextView maxtemp;
-    String dakar = "http://api.apixu.com/v1/forecast.xml?key=e10f2a2773ae47d4ac1131057171606&q=Dakar";
-    String thies = "http://api.apixu.com/v1/forecast.xml?key=e10f2a2773ae47d4ac1131057171606&q=Thies";
-    String place;
-    String Louga = "http://api.apixu.com/v1/forecast.xml?key=e10f2a2773ae47d4ac1131057171606&q=Louga";
+    TextView location,lastUpdated,tempC,icon,conditionText,wind,mintemp,maxtemp;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    List<ForecastDay> fdays = new ArrayList<>();
 
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -56,16 +72,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             if(isOnline())
             {
-                place = thies;
-                requestData(place);
+                place = "Thies";
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
         } else if (id == R.id.nav_gallery) {
             if(isOnline())
             {
-                place = dakar;
-                requestData(place);
+                place = "Kaolack";
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
@@ -73,8 +87,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             if(isOnline())
             {
-                place = Louga;
-                requestData(place);
+
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
@@ -96,8 +109,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        //@SuppressLint("WrongViewCast") Toolbar toolbar = (Toolbar) findViewById(R.id.location);
         //setSupportActionBar(toolbar);
+
+
 
         pbar = (ProgressBar) findViewById(R.id.progressBar);
         location = (TextView) findViewById(R.id.location);
@@ -107,16 +127,43 @@ public class MainActivity extends AppCompatActivity
         wind = (TextView) findViewById(R.id.windMph);
         mintemp = (TextView) findViewById(R.id.minTemp);
         maxtemp = (TextView) findViewById(R.id.maxTemp);
-        tasks = new ArrayList<>();
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //Retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+
+        final Call<Wether> weatherData = retrofitInterface.getWeather(place);
+        weatherData.enqueue(new Callback<Wether>() {
+            @Override
+            public void onResponse(Response<Wether> response) {
+
+                Wether wether = response.body();
+                if(isOnline())
+                {
+                    getWeather(wether);
+                }else{
+                    Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);*/
+        location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });*/
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -126,13 +173,34 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        /*if(isOnline())
+    //Weather au demarrage
+    public void getWeather(Wether wether)
+    {
+        if(wether != null)
         {
-            requestData(place);
-        }else{
-            Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
-        }*/
+            Current current = wether.getCurrent();
+            Location locat = wether.getLocation();
+            Forecast forecast = wether.getForecast();
+
+            location.setText(locat.getRegion());
+            lastUpdated.setText(current.getLastUpdated());
+            tempC.setText(current.getTempC());
+            conditionText.setText(current.getCondition().getText());
+            wind.setText(current.getWindMph());
+            maxtemp.setText(forecast.getForcastDays().get(0).getDay().getMaxtempC().toString());
+            mintemp.setText(forecast.getForcastDays().get(0).getDay().getMintempC().toString());
+            ForecastDay d;
+
+            for(int i = 0; i<forecast.getForcastDays().size(); i++)
+            {
+               d = forecast.getForcastDays().get(i);
+                fdays.add(d);
+            }
+            mAdapter = new WeatherAdapter(this,fdays);
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override
@@ -147,48 +215,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
-    private void requestData(String uri) {
-        MyTask task = new MyTask();
-        task.execute(uri);
-    }
-
-
-    protected void updateDisplay()
-    {
-        if(wetherList != null) {
-            for (Wether wether : wetherList) {
-                location.setText(wether.getLocationRegion());
-                tempC.setText(wether.getCurrentTempC());
-                conditionText.setText(wether.getConditionText());
-                wind.setText(wether.getWindMph());
-                mintemp.setText(wether.getMinTemp());
-                lastUpdated.setText(wether.getCurrentLastUpdated());
-                maxtemp.setText(wether.getMaxTemp());
-
-            }
-        }
     }
 
     protected boolean isOnline()
@@ -203,39 +231,5 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class MyTask extends AsyncTask<String,String,String>
-    {
-        @Override
-        protected void onPreExecute() {
-            // updateDisplay("Starting task!");
-            if(tasks.size() == 0)
-            {
-                pbar.setVisibility(View.VISIBLE);
-            }
-            tasks.add(this);
-        }
 
-        @Override
-        protected String doInBackground(String... params) {
-
-            String content = HttpManager.getData(params[0]);
-            return content;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            wetherList = WeatherXmlParser.parseFeed(s);
-            updateDisplay();
-            tasks.remove(this);
-            if(tasks.size() == 0)
-            {
-                pbar.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            //updateDisplay(values[0]);
-        }
-    }
 }
