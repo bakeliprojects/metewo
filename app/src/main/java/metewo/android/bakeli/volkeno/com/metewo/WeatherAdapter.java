@@ -1,23 +1,15 @@
 package metewo.android.bakeli.volkeno.com.metewo;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
-
 import model.ForecastDay;
-import model.Wether;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
 
@@ -38,11 +30,17 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //ForecastDay fday = fdays.get(position);
-        holder.day.setText(fdays.get(position).getDate());
+        String jour = "";
+        if(position==0)
+        {
+            jour = "Tomorrow";
+            holder.day.setText(jour);
+        }else {
+            holder.day.setText(fdays.get(position).getDate());
+        }
         holder.condition.setText(fdays.get(position).getDay().getCondition().getText());
         holder.mintemp.setText(fdays.get(position).getDay().getMintempC());
         holder.maxtemp.setText(fdays.get(position).getDay().getMaxtempC());
-
     }
 
     @Override
@@ -60,12 +58,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-
             day = (TextView) view.findViewById(R.id.day);
             condition = (TextView) view.findViewById(R.id.condition);
             mintemp = (TextView) view.findViewById(R.id.tempMin);
             maxtemp = (TextView) view.findViewById(R.id.tempMax);
-
         }
     }
 }

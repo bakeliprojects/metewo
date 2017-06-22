@@ -1,13 +1,9 @@
 package metewo.android.bakeli.volkeno.com.metewo;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Application;
-import android.app.ListActivity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -15,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener {
    //private String url = "http://api.apixu.com/v1/forecast.json?key=e10f2a2773ae47d4ac1131057171606&q=Dakar&days=7&lang=fr";
     private static final String BASE_URL = "http://api.apixu.com/";
-    private String place = "Dakar";
+    private String place = "";
 
     private String TAG = "Retrofit";
     private Retrofit retrofit;
@@ -60,51 +55,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
     List<ForecastDay> fdays = new ArrayList<>();
 
 
-
-
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            if(isOnline())
-            {
-                place = "Thies";
-            }else{
-                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
-            }
-        } else if (id == R.id.nav_gallery) {
-            if(isOnline())
-            {
-                place = "Kaolack";
-            }else{
-                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
-            }
-
-        } else if (id == R.id.nav_slideshow) {
-            if(isOnline())
-            {
-
-            }else{
-                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
-            }
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,11 +64,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //@SuppressLint("WrongViewCast") Toolbar toolbar = (Toolbar) findViewById(R.id.location);
-        //setSupportActionBar(toolbar);
-
-
-
         pbar = (ProgressBar) findViewById(R.id.progressBar);
         location = (TextView) findViewById(R.id.location);
         lastUpdated = (TextView) findViewById(R.id.lastUpdated);
@@ -127,6 +72,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         wind = (TextView) findViewById(R.id.windMph);
         mintemp = (TextView) findViewById(R.id.minTemp);
         maxtemp = (TextView) findViewById(R.id.maxTemp);
+        place = "Dakar";
 
         //Retrofit
         retrofit = new Retrofit.Builder()
@@ -153,19 +99,21 @@ implements NavigationView.OnNavigationItemSelectedListener {
             @Override
             public void onFailure(Throwable t) {
 
+                Toast.makeText(MainActivity.this, "Objet non recu!", Toast.LENGTH_LONG).show();
+
             }
         });
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);*/
-        location.setOnClickListener(new View.OnClickListener() {
+       /* location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -173,6 +121,57 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                drawer.openDrawer(GravityCompat.START);
+
+            }
+        });
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            if(isOnline())
+            {
+                place = "Thies";
+            }else{
+                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.nav_gallery) {
+            if(isOnline())
+            {
+                place = "Kaolack";
+            }else{
+                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (id == R.id.nav_slideshow) {
+            if(isOnline())
+            {
+                place = "Louga";
+            }else{
+                Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     //Weather au demarrage
@@ -193,7 +192,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
             mintemp.setText(forecast.getForcastDays().get(0).getDay().getMintempC().toString());
             ForecastDay d;
 
-            for(int i = 0; i<forecast.getForcastDays().size(); i++)
+            for(int i = 1; i<forecast.getForcastDays().size(); i++)
             {
                d = forecast.getForcastDays().get(i);
                 fdays.add(d);

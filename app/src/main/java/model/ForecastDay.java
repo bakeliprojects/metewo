@@ -3,8 +3,6 @@ package model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * Created by Lamine Dieng on 19/06/2017.
  */
