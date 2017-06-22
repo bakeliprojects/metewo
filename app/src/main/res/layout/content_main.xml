@@ -21,6 +21,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:elevation="3dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="metewo.android.bakeli.volkeno.com.metewo.MainActivity">
 
@@ -29,17 +30,19 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/location"
-                android:layout_marginTop="13dp"
-                android:layout_toEndOf="@+id/minTemp"
-                android:layout_toRightOf="@+id/minTemp" />
+                android:layout_alignEnd="@+id/lastUpdated"
+                android:layout_alignRight="@+id/lastUpdated"
+                android:layout_below="@+id/location" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="94dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/lastUpdated"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
                 android:fontFamily="sans-serif"
                 android:text="Paris"
                 android:textColor="@android:color/background_light"
@@ -59,12 +62,11 @@
                 android:id="@+id/tempC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/location"
-                android:layout_alignStart="@+id/location"
-                android:layout_below="@+id/location"
-                android:layout_marginLeft="51dp"
-                android:layout_marginStart="51dp"
-                android:layout_marginTop="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="27dp"
+                android:layout_marginRight="27dp"
+                android:layout_toLeftOf="@+id/windMph"
+                android:layout_toStartOf="@+id/windMph"
                 android:contextClickable="false"
                 android:elegantTextHeight="false"
                 android:fontFamily="sans-serif"
@@ -79,10 +81,9 @@
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/lastUpdated"
-                android:layout_alignStart="@+id/lastUpdated"
-                android:layout_below="@+id/location"
-                android:layout_marginTop="58dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView3"
+                android:layout_toRightOf="@+id/textView3"
                 app:srcCompat="@drawable/sun" />
 
             <TextView
@@ -92,7 +93,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="12dp"
-                android:text="7 mph"
+                android:text="7"
                 android:textColor="#FF9C91"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -114,10 +115,10 @@
                 android:id="@+id/minTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/windMph"
-                android:layout_alignBottom="@+id/windMph"
-                android:layout_toRightOf="@+id/icon"
-                android:text="16°"
+                android:layout_alignTop="@+id/textView3"
+                android:layout_toLeftOf="@+id/progressBar"
+                android:layout_toStartOf="@+id/progressBar"
+                android:text="16"
                 android:textColor="#FF9C91"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -126,25 +127,56 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/minTemp"
-                android:layout_toEndOf="@+id/minTemp"
-                android:layout_toRightOf="@+id/minTemp"
+                android:layout_alignTop="@+id/textView5"
+                android:layout_toEndOf="@+id/textView5"
+                android:layout_toRightOf="@+id/textView5"
                 android:text=" - "
-                android:textStyle="bold"
                 android:textColor="#FF9C91"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/maxTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/textView2"
-                android:layout_toEndOf="@+id/textView2"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
                 android:layout_toRightOf="@+id/textView2"
-                android:text="23°"
+                android:text="23"
                 android:textColor="#FF9C91"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/windMph"
+                android:layout_toEndOf="@+id/windMph"
+                android:layout_toRightOf="@+id/windMph"
+                android:elevation="2dp"
+                android:text=" mph"
+                android:textColor="#FF9C91" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/minTemp"
+                android:layout_toEndOf="@+id/minTemp"
+                android:layout_toRightOf="@+id/minTemp"
+                android:text="°"
+                android:textColor="#FF9C91" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/maxTemp"
+                android:layout_toEndOf="@+id/maxTemp"
+                android:text="°"
+                android:textColor="#FF9C91"
+                android:layout_toRightOf="@+id/maxTemp" />
+
 
         </RelativeLayout>
     </FrameLayout>
@@ -161,7 +193,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
-
 
 
     </FrameLayout>

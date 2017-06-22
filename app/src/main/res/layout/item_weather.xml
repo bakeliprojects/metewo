@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="100dp"
     android:background="#008cff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -13,47 +13,47 @@
         android:id="@+id/imageView4"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignBottom="@+id/tempMin"
+        app:srcCompat="@drawable/sun"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_alignBottom="@+id/condition"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        app:srcCompat="@drawable/sun" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_alignBottom="@+id/textView12"
-        android:layout_marginBottom="14dp"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:layout_toEndOf="@+id/imageView4"
-        android:layout_toRightOf="@+id/imageView4"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
         android:text="Tomorrow"
         android:textColor="#ffffff"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:layout_alignBottom="@+id/tempMin"
+        android:layout_toRightOf="@+id/imageView4"
+        android:layout_toEndOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/day"
-        android:layout_alignStart="@+id/day"
-        android:layout_below="@+id/day"
         android:text="Sunny"
         android:textColor="#ffffff"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignBottom="@+id/tempMin"
+        android:layout_alignLeft="@+id/day"
+        android:layout_alignStart="@+id/day" />
 
     <TextView
         android:id="@+id/tempMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="62dp"
-        android:layout_marginStart="62dp"
-        android:layout_toEndOf="@+id/day"
-        android:layout_toRightOf="@+id/day"
-        android:text="15°"
+        android:layout_toLeftOf="@+id/textView12"
+        android:layout_toStartOf="@+id/textView12"
+        android:text="15"
         android:textColor="#ffffff"
         android:textSize="24sp" />
 
@@ -61,20 +61,44 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView4"
-        android:layout_toRightOf="@+id/tempMin"
         android:text=" - "
         android:textColor="#ffffff"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tempMax"
+        android:layout_toStartOf="@+id/tempMax" />
 
     <TextView
         android:id="@+id/tempMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView4"
-        android:layout_toEndOf="@+id/textView12"
-        android:layout_toRightOf="@+id/textView12"
-        android:text="28°"
+        android:layout_alignBaseline="@+id/textView12"
+        android:layout_alignBottom="@+id/textView12"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp"
+        android:text="28"
         android:textColor="#ffffff"
         android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tempMax"
+        android:layout_toEndOf="@+id/tempMax"
+        android:layout_toRightOf="@+id/tempMax"
+        android:text="°"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tempMin"
+        android:layout_toEndOf="@+id/tempMin"
+        android:text="°"
+        android:textColor="#FFFFFF"
+        android:layout_toRightOf="@+id/tempMin" />
+
 </RelativeLayout>

@@ -11,27 +11,27 @@ public class Day {
 
     @SerializedName("maxtemp_c")
     @Expose
-    private String maxtempC;
+    private Double maxtempC;
     @SerializedName("mintemp_c")
     @Expose
-    private String mintempC;
+    private Double mintempC;
     @SerializedName("condition")
     @Expose
     private Condition condition;
 
-    public String getMaxtempC() {
+    public Double getMaxtempC() {
         return maxtempC;
     }
 
-    public void setMaxtempC(String maxtempC) {
+    public void setMaxtempC(Double maxtempC) {
         this.maxtempC = maxtempC;
     }
 
-    public String getMintempC() {
+    public Double getMintempC() {
         return mintempC;
     }
 
-    public void setMintempC(String mintempC) {
+    public void setMintempC(Double mintempC) {
         this.mintempC = mintempC;
     }
 

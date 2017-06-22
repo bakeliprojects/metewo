@@ -14,7 +14,7 @@ public class Current {
 
     @SerializedName("temp_c")
     @Expose
-    private String tempC;
+    private Double tempC;
 
     @SerializedName("condition")
     @Expose
@@ -22,7 +22,7 @@ public class Current {
 
     @SerializedName("wind_mph")
     @Expose
-    private String windMph;
+    private Double windMph;
 
     public String getLastUpdated() {
         return lastUpdated;
@@ -32,11 +32,11 @@ public class Current {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getTempC() {
+    public Double getTempC() {
         return tempC;
     }
 
-    public void setTempC(String tempC) {
+    public void setTempC(Double tempC) {
         this.tempC = tempC;
     }
 
@@ -48,11 +48,11 @@ public class Current {
         this.condition = condition;
     }
 
-    public String getWindMph() {
+    public Double getWindMph() {
         return windMph;
     }
 
-    public void setWindMph(String windMph) {
+    public void setWindMph(Double windMph) {
         this.windMph = windMph;
     }
 }
