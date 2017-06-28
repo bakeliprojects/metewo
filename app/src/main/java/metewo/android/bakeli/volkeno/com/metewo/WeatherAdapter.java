@@ -61,7 +61,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         String jour = fdays.get(position).getDate();
         if(position==0)
         {
-            jour = "Tomorrow";
+            jour = "Demain";
             //holder.day.setText(jour);
             holder.itemView.setBackgroundColor(Color.parseColor("#ec5747"));
         } else

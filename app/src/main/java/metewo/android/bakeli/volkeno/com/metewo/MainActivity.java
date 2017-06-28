@@ -1,6 +1,7 @@
 package metewo.android.bakeli.volkeno.com.metewo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -43,10 +44,9 @@ public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener {
    //private String url = "http://api.apixu.com/v1/forecast.json?key=e10f2a2773ae47d4ac1131057171606&q=Dakar&days=7&lang=fr";
     private static final String BASE_URL = "http://api.apixu.com/";
-    //private String place = "Dakar";
+    private static String place = "Dakar";
 
     private String TAG = "Retrofit";
-    private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     ProgressBar pbar;
     TextView location,lastUpdated,tempC,icon,conditionText,wind,mintemp,maxtemp;
@@ -54,6 +54,10 @@ implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<ForecastDay> fdays = new ArrayList<>();
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
 
     @Override
@@ -73,10 +77,11 @@ implements NavigationView.OnNavigationItemSelectedListener {
         wind = (TextView) findViewById(R.id.windMph);
         mintemp = (TextView) findViewById(R.id.minTemp);
         maxtemp = (TextView) findViewById(R.id.maxTemp);
+        pbar = (ProgressBar) findViewById(R.id.progressBar);
         //String place = "Dakar";
 
 
-        //getRetrofit("Dakar");
+        getRetrofit(place);
 
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,14 +112,20 @@ implements NavigationView.OnNavigationItemSelectedListener {
         if (id == R.id.nav_camera) {
             if(isOnline())
             {
-                getRetrofit("Thies");
+                //getRetrofit("Thies");
+                place = "Thies";
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
         } else if (id == R.id.nav_gallery) {
             if(isOnline())
             {
-                getRetrofit("Kaolack");
+                //getRetrofit("Kaolack");
+                place = "Kaolack";
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
@@ -122,7 +133,10 @@ implements NavigationView.OnNavigationItemSelectedListener {
         } else if (id == R.id.nav_slideshow) {
             if(isOnline())
             {
-                getRetrofit("Louga");
+                //getRetrofit("Louga");
+                place = "Louga";
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }else{
                 Toast.makeText(MainActivity.this, "Network is not available!", Toast.LENGTH_LONG).show();
             }
@@ -145,6 +159,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
     {
         if(wether != null)
         {
+            pbar.setVisibility(View.INVISIBLE);
             Current current = wether.getCurrent();
             Location locat = wether.getLocation();
             Forecast forecast = wether.getForecast();
@@ -165,6 +180,8 @@ implements NavigationView.OnNavigationItemSelectedListener {
             }
             mAdapter = new WeatherAdapter(this,fdays);
             mRecyclerView.setAdapter(mAdapter);
+        }else{
+            pbar.setVisibility(View.VISIBLE);
         }
     }
 
