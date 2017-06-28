@@ -7,7 +7,10 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +24,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     private List<ForecastDay> fdays = new ArrayList<>();
     private Context context;
+    private MainActivity mainActivity;
 
     public WeatherAdapter(Context context,List<ForecastDay> wList) {
         this.fdays = wList;
@@ -35,6 +39,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        Picasso
+                .with(context).load("http:"+fdays.get(position).getDay().getCondition().getIcon())
+                .resize(120,120)
+                .into(holder.icon);
 
         //samedi
         Calendar cal1 = Calendar.getInstance();
@@ -62,7 +71,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         if(position==0)
         {
             jour = "Demain";
-            //holder.day.setText(jour);
+            //holder.day.setText(jour);#ec5747
             holder.itemView.setBackgroundColor(Color.parseColor("#ec5747"));
         } else
          if(position==1)
@@ -98,6 +107,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView day, condition, mintemp, maxtemp;
+        private ImageView icon;
 
         public ViewHolder(View view) {
             super(view);
@@ -105,6 +115,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             condition = (TextView) view.findViewById(R.id.condition);
             mintemp = (TextView) view.findViewById(R.id.tempMin);
             maxtemp = (TextView) view.findViewById(R.id.tempMax);
+            icon = (ImageView) view.findViewById(R.id.icon);
         }
     }
 }

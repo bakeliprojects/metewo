@@ -62,29 +62,29 @@
                 android:id="@+id/tempC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="27dp"
-                android:layout_marginRight="27dp"
-                android:layout_toLeftOf="@+id/windMph"
-                android:layout_toStartOf="@+id/windMph"
                 android:contextClickable="false"
                 android:elegantTextHeight="false"
                 android:fontFamily="sans-serif"
                 android:freezesText="false"
-                android:text="23°"
+                android:text="23"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#ffffff"
                 android:textSize="70sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_alignBaseline="@+id/textView"
+                android:layout_alignBottom="@+id/textView"
+                android:layout_toLeftOf="@+id/windMph"
+                android:layout_toStartOf="@+id/windMph" />
 
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:srcCompat="@drawable/sun"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/textView3"
-                android:layout_toRightOf="@+id/textView3"
-                app:srcCompat="@drawable/sun" />
+                android:layout_toLeftOf="@+id/progressBar"
+                android:layout_toStartOf="@+id/progressBar" />
 
             <TextView
                 android:id="@+id/windMph"
@@ -104,8 +104,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/windMph"
                 android:layout_alignBottom="@+id/windMph"
-                android:layout_alignLeft="@+id/tempC"
-                android:layout_alignStart="@+id/tempC"
+                android:layout_alignLeft="@+id/location"
+                android:layout_alignStart="@+id/location"
                 android:text="Sunny"
                 android:textColor="#FF9C91"
                 android:textSize="16sp"
@@ -173,9 +173,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/maxTemp"
                 android:layout_toEndOf="@+id/maxTemp"
+                android:layout_toRightOf="@+id/maxTemp"
                 android:text="°"
-                android:textColor="#FF9C91"
-                android:layout_toRightOf="@+id/maxTemp" />
+                android:textColor="#FF9C91" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="°"
+                android:textColor="#ffffff"
+                android:textSize="70sp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/windMph"
+                android:layout_alignLeft="@+id/windMph"
+                android:layout_alignStart="@+id/windMph" />
 
 
         </RelativeLayout>

@@ -20,10 +20,6 @@ public class ForecastDay {
     @Expose
     private String minTempC;
 
-    @SerializedName("condition")
-    @Expose
-    private Condition condition;
-
     @SerializedName("day")
     @Expose
     private Day day;
@@ -60,11 +56,4 @@ public class ForecastDay {
         this.minTempC = minTempC;
     }
 
-    public Condition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
 }
